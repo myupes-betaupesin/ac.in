@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MyUPES - University of Tomorrow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      min-height: 100vh;
+      margin: 0;
+    }
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body class="relative flex items-start justify-center px-4 py-8 bg-gradient-to-br from-[#151a65] to-[#56085f]">
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline id="bg-video" class="translate-y-[-20px]">
+    <source src="upes-web-banner.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Login Card -->
+  <div class="w-full max-w-md bg-gradient-to-r from-[#20b8eb] to-[#632392] rounded-2xl py-1 px-6 lg:py-1.5 border border-white/20 shadow-2xl md:absolute md:top-10 md:right-28">
+    <div class="flex flex-col items-center mb-4">
+        <img src="logo (1).png" alt="Login Logo" class="w-36 h-36 sm:w-44 sm:h-44 lg:w-52 lg:h-52 object-contain mb-0 -mt-1">
+
+      <h2 class="text-white text-lg font-semibold mb-1 text-center">Welcome to MyUPES</h2>
+      <p class="text-white/80 text-xs tracking-wide text-center">UNIVERSITY OF TOMORROW</p>
+    </div>
+
+    <form class="space-y-4" id="login-form">
+      <div>
+        <label for="username" class="block text-white text-xs font-medium mb-1">User Name</label>
+        <input type="text" id="username" name="username" value="Suyash.12585@stu.upes.ac.in"
+          class="w-full px-4 py-3 rounded-lg bg-white/90 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition" />
+      </div>
+      <div>
+        <label for="password" class="block text-white text-xs font-medium mb-1">Password</label>
+        <input type="password" id="password" name="password" value=""
+          class="w-full px-4 py-3 rounded-lg bg-white/90 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition" />
+      </div>
+      <div class="flex items-center justify-between">
+        <label class="flex items-center text-white text-xs">
+          <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 mr-2" checked>
+          Remember me
+        </label>
+        <a href="#" class="text-white text-xs underline hover:text-blue-200 transition">Forgot Password?</a>
+      </div>
+      <button type="submit"
+        class="w-full py-3 text-sm bg-gradient-to-r from-blue-400 to-blue-600 text-white font-bold rounded-lg shadow-md hover:from-blue-500 hover:to-blue-700 transition uppercase tracking-wider">
+        LOGIN
+      </button>
+    </form>
+    <div id="error-message" class="text-red-500 text-xs mt-2 text-center"></div>
+  </div>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const errorDiv = document.getElementById('error-message');
+      errorDiv.textContent = '';
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const result = await response.json();
+      if (result.success) {
+        // Redirect or show success (for demo, just alert)
+        window.location.href = 'dashboard.html';
+      } else {
+        errorDiv.textContent = result.message || 'Login failed.';
+        document.getElementById('password').value = '';
+      }
+    });
+  </script>
+</body>
+</html>
